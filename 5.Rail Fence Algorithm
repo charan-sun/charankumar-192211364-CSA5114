@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+void encryptRailFence(char *plaintext, int rails, char *ciphertext) {
+    int len = strlen(plaintext);
+    int index = 0;
+    for (int i = 0; i < rails; i++) {
+        int step1 = (rails - i - 1) * 2;
+        int step2 = i * 2;
+        int j = i;
+        while (j < len) {
+            ciphertext[index++] = plaintext[j];
+            if (step1 > 0 && step2 > 0 && j + step1 < len) {
+                ciphertext[index++] = plaintext[j + step1];
+            }
+            j += step1 + step2;
+        }
+    }
+    ciphertext[index] = '\0';
+}
+void decryptRailFence(char *ciphertext, int rails, char *decryptedText) {
+    int len = strlen(ciphertext);
+    int index = 0;    for (int i = 0; i < rails; i++) {
+        int step1 = (rails - i - 1) * 2;
+        int step2 = i * 2;
+        int j = i;
+        while (j < len) {
+            decryptedText[j] = ciphertext[index++];
+            if (step1 > 0 && step2 > 0 && j + step1 < len) {
+                decryptedText[j + step1] = ciphertext[index++];
+            }
+            j += step1 + step2;
+        }
+    }
+    decryptedText[len] = '\0';
+}
+
+int main() {
+    char plaintext[100];
+    char ciphertext[100];
+    char decryptedText[100];
+    int rails;
+    printf("Enter the plaintext: ");
+    fgets(plaintext, sizeof(plaintext), stdin);
+    printf("Enter the number of rails: ");
+    scanf("%d", &rails);
+    encryptRailFence(plaintext, rails, ciphertext);
+    printf("Encrypted Text: %s", ciphertext);
+    decryptRailFence(ciphertext, rails, decryptedText);
+    printf("Decrypted Text: %s", decryptedText);
+    return 0;
+}
